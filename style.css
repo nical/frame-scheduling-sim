@@ -12,7 +12,7 @@
     height: 10px;
     border-radius: 10px;
     border:1px solid;
-    top: 95px;
+    top: 0px;
 }
 
 .track {
@@ -31,36 +31,30 @@
     position: absolute;
     width: 1px;
     height: 200px;
-    top: 100px;
+    top: 10px;
     background-color: black;
     opacity: 0.5;
 }
 
 .content {
     /*background-color: rgb(80, 141, 80);*/
-    top: 100px;
+    top: 10px;
 }
 
 
 .scene_builder {
     /*background-color: rgb(170, 148, 47);*/
-    top: 150px;
+    top: 60px;
 }
 
 .frame_builder {
     /*background-color: rgb(47, 131, 170);*/
-    top: 200px;
+    top: 110px;
 }
 
 .render {
     /*background-color: rgb(136, 79, 189);*/
-    top: 250px;
-}
-
-#settings {
-    position: absolute;
-    top: 350px;
-    left: 10px;
+    top: 160px;
 }
 
 #input {
@@ -70,4 +64,11 @@
     border: none;
     border-radius: 5px;
     padding: 5px;
+}
+
+#blocks {
+    position:relative;
+    height: 230px;
+    width: 100%;
+    overflow: scroll;
 }

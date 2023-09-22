@@ -1,17 +1,17 @@
 
-const keys = [
+const KEYS = [
     "content",
     "scene_builder",
     "frame_builder",
     "render"
 ];
 
-const block_colors = [
+const BLOCK_COLORS = [
     "rgb(188, 80, 144)",
     "rgb(88, 80, 141)",
 ];
 
-const block_borders = [
+const BLOCK_BORDERS = [
     "rgb(94, 40, 72)",
     "rgb(44, 40, 70)",
 ];
@@ -40,8 +40,8 @@ function add_block(key, evt_idx, t0, t1) {
     const length = (t1 - t0) * SCALE;
     block.style.left = TRACK_START_PX + start + "px";
     block.style.width = length + "px";
-    block.style.backgroundColor = block_colors[evt_idx % block_colors.length];
-    block.style.borderColor = block_borders[evt_idx % block_borders.length];
+    block.style.backgroundColor = BLOCK_COLORS[evt_idx % BLOCK_COLORS.length];
+    block.style.borderColor = BLOCK_BORDERS[evt_idx % BLOCK_BORDERS.length];
     blocks.appendChild(block);
 }
 
@@ -50,14 +50,14 @@ function add_event_start_block(time, evt_idx) {
     var block = document.createElement("div");
     block.classList.add("event_start");
     block.style.left = TRACK_START_PX + time * SCALE - 5 + "px";
-    block.style.backgroundColor = block_colors[evt_idx % block_colors.length];
+    block.style.backgroundColor = BLOCK_COLORS[evt_idx % BLOCK_COLORS.length];
     blocks.appendChild(block);
 }
 
 function add_track(key, track_idx, max_t) {
     var blocks = document.getElementById("blocks");
 
-    const y = 100 + track_idx * 50;
+    const y = 10 + track_idx * 50;
 
     var track = document.createElement("div");
     track.classList.add("track");
@@ -83,6 +83,11 @@ function add_vsync_bar(t) {
     blocks.appendChild(vsync);
 }
 
+function reset_view() {
+    var blocks = document.getElementById("blocks");
+    blocks.innerHTML = "";
+}
+
 function simulate(settings, timeline) {
     var current_time = {
         content: 0,
@@ -92,7 +97,7 @@ function simulate(settings, timeline) {
     };
 
     let items = {};
-    for (const key of keys) {
+    for (const key of KEYS) {
         items[key] = [];
     }
 
@@ -104,7 +109,7 @@ function simulate(settings, timeline) {
 
         console.log("event " + evt_idx);
 
-        for (const key of keys) {
+        for (const key of KEYS) {
             if (evt[key] != undefined) {
                 var t0 = Math.max(t, current_time[key]);
                 t0 = scheduling_logic(key, t0, items[key], settings);
@@ -124,25 +129,34 @@ function simulate(settings, timeline) {
     }
 
     var max_t = 0;
-    for (const key of keys) {
+    for (const key of KEYS) {
         max_t = Math.max(current_time[key], max_t);
     }
 
+    return {
+        max_t: max_t,
+        items: items,
+    };
+}
+
+function update_view(settings, simulation, timeline) {
+    reset_view();
+
     var track_idx = 0;
-    for (const key of keys) {
+    for (const key of KEYS) {
         console.log("--- " + key);
 
-        add_track(key, track_idx, max_t);
+        add_track(key, track_idx, simulation.max_t);
         track_idx += 1;
 
-        for (const item of items[key]) {
+        for (const item of simulation.items[key]) {
             console.log(item);
             add_block(key, item.evt_idx, item.t0, item.t1);
         }
     }
 
     var vsync_t = 0;
-    while (vsync_t < max_t) {
+    while (vsync_t < simulation.max_t) {
         add_vsync_bar(vsync_t);
         vsync_t += settings.vsync_interval;
     }
@@ -152,10 +166,12 @@ function simulate(settings, timeline) {
     }
 }
 
+
 function run() {
     let text_area = document.getElementById("input");
     var timeline = JSON.parse(text_area.value);
-    simulate(settings, timeline);
+    const sim = simulate(settings, timeline);
+    update_view(settings, sim, timeline);
 }
 
 window.onload = (event) => { run() };
