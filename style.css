@@ -1,0 +1,59 @@
+.tl_block {
+    position: absolute;
+    height: 50px;
+    border-radius: 3px;
+    border: 1px solid;
+    box-sizing: border-box;
+}
+
+.event_start {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    border:1px solid;
+    top: 90px;
+}
+
+.track {
+    position: absolute;
+    height: 50px;
+    left: 0px;
+}
+
+.track_name {
+    position: absolute;
+    left: 5px;
+    font-size: 12px;
+}
+
+.vsync {
+    position: absolute;
+    width: 1px;
+    height: 200px;
+    top: 100px;
+    background-color: black;
+    opacity: 0.5;
+}
+
+.content {
+    /*background-color: rgb(80, 141, 80);*/
+    top: 100px;
+}
+
+
+.scene_builder {
+    /*background-color: rgb(170, 148, 47);*/
+    top: 150px;
+}
+
+.frame_builder {
+    /*background-color: rgb(47, 131, 170);*/
+    top: 200px;
+}
+
+.render {
+    /*background-color: rgb(136, 79, 189);*/
+    top: 250px;
+}
+
