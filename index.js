@@ -6,13 +6,6 @@ const keys = [
     "render"
 ];
 
-const timeline = [
-    { start: 0, content: 20, scene_builder: 20, frame_builder: 4, render: 5 },
-    { start: 16, content: 1, scene_builder: 10, frame_builder: 3, render: 18 },
-    { start: 32, content: 17, scene_builder: 5, frame_builder: 1, render: 4 },
-    { start: 48, content: 1, scene_builder: 4, frame_builder: 5, render: 10 }
-];
-
 const block_colors = [
     "rgb(188, 80, 144)",
     "rgb(88, 80, 141)",
@@ -128,8 +121,6 @@ function simulate(settings, timeline) {
                 t = t1;
             }
         }
-
-        add_event_start_block(evt.start, evt_idx);
     }
 
     var max_t = 0;
@@ -155,9 +146,16 @@ function simulate(settings, timeline) {
         add_vsync_bar(vsync_t);
         vsync_t += settings.vsync_interval;
     }
+
+    for (var evt_idx = 0; evt_idx < timeline.length; evt_idx++) {
+        add_event_start_block(timeline[evt_idx].start, evt_idx);
+    }
 }
 
-window.onload = (event) => {
-    console.log("page loaded");
+function run() {
+    let text_area = document.getElementById("input");
+    var timeline = JSON.parse(text_area.value);
     simulate(settings, timeline);
-};
+}
+
+window.onload = (event) => { run() };
