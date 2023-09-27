@@ -14,15 +14,39 @@
   </div>
 
   <div id="settings">
-  <textarea id="input">
+
+    <button onclick="run()" id="run">Run</button>
+
+
+<textarea id="rules">
+// Return the desired start time for an event.
+// If this function returns undefined, the event is canceled.
+
+//console.log(ctx);
+
+// Time until next vsync normalized to the vsync interval.
+var time_until_next_vsync = (ctx.next_vsync - time) / ctx.vsync_interval;
+
+if (step == "content" && time_until_next_vsync < 0.7) {
+  time = ctx.next_vsync;
+}
+
+if (step == "frame_builder" && time_until_next_vsync < 0.7) {
+  time = ctx.next_vsync;
+}
+
+return time;
+</textarea>
+
+    <textarea id="input">
 [
-    { "start": 0, "content": 20, "scene_builder": 20, "frame_builder": 4,  "render": 5 },
-    { "start": 16, "content": 1, "scene_builder": 10, "frame_builder": 3,  "render": 18 },
-    { "start": 32, "content": 17, "scene_builder": 5, "frame_builder": 1,  "render": 4 },
-    { "start": 48, "content": 1, "scene_builder": 4, "frame_builder": 5,  "render": 10 }
+    {"content": 10, "scene_builder": 10, "frame_builder": 4,  "render": 5 },
+    {"content": 2, "scene_builder": 10, "frame_builder": 3,  "render": 18 },
+    {"content": 17, "scene_builder": 5, "frame_builder": 1,  "render": 4 },
+    {"content": 4, "scene_builder": 4, "frame_builder": 5,  "render": 10 }
 ]
-  </textarea>
-  <button onclick="run()">Run</button>
+    </textarea>
+
   </div>
 
   </body>
